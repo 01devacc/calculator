@@ -1,6 +1,8 @@
 let num1;
 let num2;
 let operator;
+let display = document.querySelector('.display')
+let digits = document.querySelectorAll('.digit')
 
 function add(num1, num2) {
     return num1 + num2
@@ -32,3 +34,13 @@ function operate(num1, num2, operator) {
             break;
     }
 }
+
+function populateDisplay() {
+    digits.forEach(digit => {
+        digit.addEventListener('click', () => {
+            display.textContent = digit.textContent
+        })
+    })
+}
+
+populateDisplay()
