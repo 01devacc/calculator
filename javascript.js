@@ -2,6 +2,7 @@ let num1;
 let num2;
 let operator;
 let operatePrimed = false;
+let needToClear = false;
 
 let firstOperand = '';
 let secondOperand = '';
@@ -46,16 +47,19 @@ function operate(num1, num2, operator) {
 function populateDisplay() {
     digits.forEach(digit => {
         digit.addEventListener('click', () => {
-            if ((display.textContent === '0' || display.textContent === '') && digit.textContent === '0') {
-                display.textContent = 0;
-                
-            } else if (operatePrimed) {
-                secondOperand += digit.textContent;
-                display.textContent = secondOperand;
+            if (!needToClear) {
+                if (display.textContent === '0' && digit.textContent === '0') {
+                    display.textContent = 0;
+                    
+                } else if (operatePrimed) {
+                    display.textContent === '0' ? secondOperand = digit.textContent : secondOperand += digit.textContent;
+                    display.textContent = secondOperand;
 
-            } else {    
-                firstOperand += digit.textContent;
-                display.textContent = firstOperand;
+    
+                } else {    
+                    display.textContent === '0' ? firstOperand = digit.textContent : firstOperand += digit.textContent;
+                    display.textContent = firstOperand;
+                }
             }
         })
     })
@@ -65,12 +69,16 @@ function selectOperator() {
     operators.forEach(operatorButton => {
         operatorButton.addEventListener('click', () => {
             
-            if (operatePrimed) {
+            if (!needToClear) {
+                if (operatePrimed) {
                     let result = calculate();
                     displayResult(result)
                 }
-            operator = operatorButton.textContent;
-            operatePrimed = true;
+                operator = operatorButton.textContent;
+                operatePrimed = true;
+            }
+
+
         })
 
         })
@@ -78,13 +86,14 @@ function selectOperator() {
 
 
 function equalsPressed() {
-    if (true) {
-        equal.addEventListener('click', () => {
+    equal.addEventListener('click', () => {
+        if (secondOperand !== '') {
             let result = calculate();
             displayResult(result)
-            
-        })
-    }
+            operatePrimed = false;
+        }
+    
+    })
 }
 
 function convertToNumbers(firstOperand, secondOperand) {
@@ -99,9 +108,19 @@ function displayResult(result) {
 }
 
 
+
 function calculate() {
-    convertToNumbers(firstOperand, secondOperand);
-    return operate(num1, num2, operator);
+    
+    if (!needToClear) {
+        convertToNumbers(firstOperand, secondOperand);
+        if (num2 === 0 && operator === '/') {
+            needToClear = true;
+            return 'ERROR';
+            
+        }
+        return operate(num1, num2, operator);
+    }
+
 }
 
 function clearPressed() {
@@ -110,6 +129,7 @@ function clearPressed() {
         firstOperand = '';
         secondOperand = '';
         operatePrimed = false;
+        needToClear = false;
     })
 }
 
@@ -119,5 +139,6 @@ function mainLoop() {
     equalsPressed()
     clearPressed()
 }
+
 
 mainLoop();
