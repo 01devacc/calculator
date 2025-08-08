@@ -3,6 +3,7 @@ let num2;
 let operator;
 let operatePrimed = false;
 let needToClear = false;
+let equalsLastPressed = false;
 
 let firstOperand = '';
 let secondOperand = '';
@@ -12,6 +13,7 @@ let digits = document.querySelectorAll('.digit')
 let operators = document.querySelectorAll('.operator')
 let equal = document.querySelector('.equals')
 let clear = document.querySelector('.clear')
+
 
 function add(num1, num2) {
     return num1 + num2
@@ -56,10 +58,19 @@ function populateDisplay() {
                     display.textContent = secondOperand;
 
     
-                } else {    
-                    display.textContent === '0' ? firstOperand = digit.textContent : firstOperand += digit.textContent;
-                    display.textContent = firstOperand;
+                } else {
+                    if (equalsLastPressed) {
+                        firstOperand = digit.textContent;
+                        display.textContent = firstOperand;
+                    }
+                    else {
+                        display.textContent === '0' ? firstOperand = digit.textContent : firstOperand += digit.textContent;
+                        display.textContent = firstOperand;
+                    }
+
+
                 }
+                equalsLastPressed = false;
             }
         })
     })
@@ -76,11 +87,9 @@ function selectOperator() {
                 }
                 operator = operatorButton.textContent;
                 operatePrimed = true;
+                equalsLastPressed = false;
             }
-
-
         })
-
         })
 }
 
@@ -91,6 +100,7 @@ function equalsPressed() {
             let result = calculate();
             displayResult(result)
             operatePrimed = false;
+            equalsLastPressed = true;
         }
     
     })
@@ -106,7 +116,6 @@ function displayResult(result) {
     firstOperand = result.toString();
     secondOperand = '';
 }
-
 
 
 function calculate() {
@@ -130,6 +139,7 @@ function clearPressed() {
         secondOperand = '';
         operatePrimed = false;
         needToClear = false;
+        equalsLastPressed = false;
     })
 }
 
