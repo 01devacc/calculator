@@ -55,18 +55,18 @@ function populateDisplay() {
                     display.textContent = 0;
                     
                 } else if (operatePrimed) {
-                    display.textContent === '0' ? secondOperand = digit.textContent : secondOperand += digit.textContent;
-                    display.textContent = secondOperand;
-
+                    display.textContent === '0' ? display.textContent = digit.textContent : display.textContent += digit.textContent;
+                    secondOperand = display.textContent;
     
                 } else {
                     if (equalsLastPressed) {
                         firstOperand = digit.textContent;
                         display.textContent = firstOperand;
+
                     }
                     else {
-                        display.textContent === '0' ? firstOperand = digit.textContent : firstOperand += digit.textContent;
-                        display.textContent = firstOperand;
+                        display.textContent === '0' ? display.textContent = digit.textContent : display.textContent += digit.textContent;
+                        firstOperand = display.textContent;
                     }
 
 
@@ -87,6 +87,7 @@ function selectOperator() {
                     displayResult(result)
                 }
                 operator = operatorButton.textContent;
+                display.textContent = '';
                 operatePrimed = true;
                 equalsLastPressed = false;
             }
@@ -144,11 +145,35 @@ function clearPressed() {
     })
 }
 
+function periodPressed() {
+    period.addEventListener('click', () => {
+        if (!(display.textContent.includes('.'))) {
+            display.textContent += '.'
+        }
+    })
+}
+
+function backspacePressed() {
+    backspace.addEventListener('click', () => {
+        let string = display.textContent
+        display.textContent = string.slice(0, string.length - 1)
+
+        if (operatePrimed) {
+            secondOperand = display.textContent;
+        } else {
+            firstOperand = display.textContent;
+        }
+        equalsLastPressed = false;
+    })
+}
+
 function mainLoop() {
     populateDisplay()
     selectOperator()
     equalsPressed()
     clearPressed()
+    periodPressed()
+    backspacePressed()
 }
 
 
