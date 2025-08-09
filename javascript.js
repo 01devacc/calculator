@@ -13,7 +13,8 @@ let digits = document.querySelectorAll('.digit')
 let operators = document.querySelectorAll('.operator')
 let equal = document.querySelector('.equals')
 let clear = document.querySelector('.clear')
-
+let period = document.querySelector('.period')
+let backspace = document.querySelector('.backspace')
 
 function add(num1, num2) {
     return num1 + num2
